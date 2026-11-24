@@ -19,10 +19,10 @@ Nuestro propósito es facilitar el acceso a la obra y brindar herramientas para 
 
 **Integrantes**
 
-*Ana Sánchez Artaza*<br/>
-*Francesca Lupinacci*<br/>
-*Agustina Kern*<br/>
-*Renata Patti*<br/>
+*Sánchez Artaza, Ana*<br/>
+*Lupinacci, Francesca*<br/>
+*Kern, Agustina*<br/>
+*Patti, Renata*<br/>
 
 Cada una de las integrantes del grupo fuimos asignadas una determinada cantidad de folios del *Lazarillo de ciegos caminantes* desde K1 a L2. A partir de eso, realizamos una lectura del texto y vinculamos las transcripciones con las imágenes de la edición impresa e incorporamos notas explicativas, información sobre los personajes mencionados y referencias a los lugares que aparecen a lo largo del recorrido. Estos recursos buscan ayudar a comprender palabras poco habituales, reconocer nombres propios y situar los espacios del relato, permitiendo que cada persona explore el texto según sus intereses y construya su propio itinerario de lectura. 
 
