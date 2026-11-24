@@ -38,3 +38,72 @@ gallery: true
     </div>
 
 </div>
+
+<style>
+#folios-alineados .folio {
+    display: block;
+    margin-bottom: .75rem;
+}
+</style>
+<script>
+(() => {
+    const panel = document.getElementById("collapseTranscript");
+    if (!panel) return;
+    const original = panel.closest(".row");
+    const source = panel.querySelector(".card-body > .row.clearfix");
+    if (!original || !source) return;
+    const images = Array.from(original.firstElementChild.children)
+        .filter(element => element.querySelector("a.gallery-img"));
+    const markers = Array.from(source.querySelectorAll("span.folio"));
+    const names = markers.map(marker =>
+        marker.textContent.match(/Folio:\s*([^)]+)/i)?.[1].trim());
+    const options = original.lastElementChild.querySelector(".btn-group");
+    if (!options) return;
+    let problem = "";
+    if (!images.length || images.length !== markers.length) {
+        problem = "Hay " + images.length + " imágenes y " + markers.length +
+            " marcas de folio. Debe haber una marca por imagen, en el mismo orden.";
+    } else if (names.some(name => !name) ||
+        new Set(names.map(name => name.toLowerCase())).size !== names.length) {
+        problem = "Hay marcas de folio vacías o repetidas. Revisá la transcripción.";
+    }
+    if (problem) {
+        const warning = document.createElement("p");
+        warning.className = "alert alert-warning";
+        warning.textContent = "No se pudo alinear: " + problem;
+        original.before(warning);
+        return;
+    }
+    const parts = markers.map((marker, i) => {
+        const range = document.createRange();
+        if (i === 0) range.setStart(source, 0);
+        else range.setStartBefore(marker);
+        if (markers[i + 1]) range.setEndBefore(markers[i + 1]);
+        else range.setEnd(source, source.childNodes.length);
+        return range.cloneContents();
+    });
+    // Se emparejan por orden: primera imagen con primer folio, etc.
+    const result = document.createElement("div");
+    result.id = "folios-alineados";
+    images.forEach((image, i) => {
+        const row = document.createElement("section");
+        row.className = "row g-4 mb-4 align-items-start";
+        row.innerHTML = '<div class="col-md-6"></div>' +
+            '<div class="col-md-6"><div class="collapse show texto-folio" id="texto-folio-' + i + '">' +
+            '<div class="card card-body text-start"></div></div></div>';
+        row.firstElementChild.append(image);
+        row.querySelector(".card-body").append(parts[i]);
+        result.append(row);
+    });
+    const button = options.querySelector('[data-bs-target="#collapseTranscript"]');
+    if (button) {
+        button.setAttribute("data-bs-target", "#folios-alineados .texto-folio");
+        button.setAttribute("aria-expanded", "true");
+        button.setAttribute("aria-controls", images.map((_, i) => "texto-folio-" + i).join(" "));
+    }
+    // Se conserva cualquier traducción u otro contenido adicional.
+    panel.remove();
+    original.before(...Array.from(original.lastElementChild.childNodes), result);
+    original.remove();
+})();
+</script>
